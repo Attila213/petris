@@ -9,16 +9,24 @@ display = pygame.Surface((150,150))
 
 pygame.display.set_caption("PETRIS")
 
-imgs = fun.image_loader()
+
 map = fun.map_generation((50,10),8)
+blocks = []
+imgs = fun.image_loader()
 
 falling = False
-current_block_pos = []
-current_block_img = any
+
+current_block = {
+    "pos":[[],[]],
+    "img":any,
+    "type":any
+}
+
 
 frame = 0
 run = True
 while run:
+
     frame += 1
     display.fill((0,0,0))
     
@@ -28,18 +36,26 @@ while run:
     
     if falling:
         if frame % 120==0:
-            current_block_pos[1] += 8
+          
+            if current_block["pos"][1] == map[0][len(map[0])-1].y:
+                falling = False
+            else:            
+                current_block["pos"][1] += 8
+                print(current_block["type"])
     else:   
-        current_block_pos,current_block_img = fun.draw_part(map,imgs)
-        current_block_pos[0] = current_block_pos.x
-        current_block_pos[1] = current_block_pos.y
+        rect,current_block["img"],current_block["type"] = fun.draw_part(map,imgs)
+        current_block["pos"][0] = rect.x
+        current_block["pos"][1] = rect.y
 
         falling= True
         
         
-        
-
-    display.blit(current_block_img,(current_block_pos[0],current_block_pos[1]))
+    
+    for i in map:
+        for j in i:
+            pygame.draw.rect(display,(255,255,255),j)
+            
+    display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))

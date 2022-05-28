@@ -12,6 +12,8 @@ pygame.display.set_caption("PETRIS")
 imgs = fun.image_loader()
 map = fun.map_generation((50,10),8)
 
+falling = False
+
 frame = 0
 run = True
 while run:
@@ -20,8 +22,12 @@ while run:
         if event.type == pygame.QUIT:
             pygame.quit()
     
-    
-    #fun.draw_part(display,map,imgs)
+    if falling:
+        if frame % 120==0:
+            print("esik")
+    else:   
+        fun.draw_part(display,map,imgs)
+        falling= True
 
     
     clock.tick(120)    

@@ -36,4 +36,17 @@ def image_loader():
     return imgs
 
 def draw_part(surface,map,imgs):
-    print(len(map))
+    
+    x = random.randint(0,len(map)-1)
+    img = any
+    
+    randomType = random.randint(0,len(imgs)-1)
+    randomImg = random.randint(1,len(imgs)-1)
+    
+    if randomImg == 4:
+        img = imgs[randomType][randomImg][0]
+    else:
+        img = imgs[randomType][randomImg]
+    
+    
+    surface.blit(img,map[x][0])

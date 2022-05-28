@@ -20,7 +20,8 @@ falling = False
 current_block = {
     "pos":[[],[]],
     "img":any,
-    "type":any
+    "type":any,
+    "rect":any
 }
 
 
@@ -39,12 +40,12 @@ while run:
         if frame % 60==0:
           
             if current_block["pos"][1] == map[0][len(map[0])-1].y:
-                
-                
-                blocks.append([pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8),current_block["type"],current_block["img"]])
+                blocks.append([pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8),current_block["type"],current_block["img"],current_block["rect"]])
                 falling = False
             else:            
                 current_block["pos"][1] += 8
+                current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
+
     else:
         rect,current_block["img"],current_block["type"] = fun.draw_part(map,imgs)
         current_block["pos"][0] = rect.x
@@ -60,7 +61,9 @@ while run:
     
     for i in blocks:
         pygame.draw.rect(display,(255,255,255),i[0])   
+        pygame.draw.rect(display,(0,0,0),i[3])
         display.blit(i[2],(i[0].x,i[0].y))
+
          
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 

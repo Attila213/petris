@@ -1,3 +1,4 @@
+from dis import dis
 import pygame,sys,os,time
 import functions as fun
 pygame.init()
@@ -35,14 +36,16 @@ while run:
             pygame.quit()
     
     if falling:
-        if frame % 120==0:
+        if frame % 60==0:
           
             if current_block["pos"][1] == map[0][len(map[0])-1].y:
+                
+                
+                blocks.append([pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8),current_block["type"],current_block["img"]])
                 falling = False
             else:            
                 current_block["pos"][1] += 8
-                print(current_block["type"])
-    else:   
+    else:
         rect,current_block["img"],current_block["type"] = fun.draw_part(map,imgs)
         current_block["pos"][0] = rect.x
         current_block["pos"][1] = rect.y
@@ -54,7 +57,11 @@ while run:
     for i in map:
         for j in i:
             pygame.draw.rect(display,(255,255,255),j)
-            
+    
+    for i in blocks:
+        pygame.draw.rect(display,(255,255,255),i[0])   
+        display.blit(i[2],(i[0].x,i[0].y))
+         
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 
     clock.tick(120)    

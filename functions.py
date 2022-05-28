@@ -59,3 +59,14 @@ def draw_part(map,imgs):
     
     rect = pygame.Rect(map[x][0].x,map[0][0].y,8,8)
     return rect,img,imgtype
+
+def collide_block_rects(rect,blocks):
+    collide = False
+    #ellenőrizzül hogy ütközik-e a jelenlegi rect és a blockban található valamelyik
+    if len(blocks) != 0:
+        for i in blocks:
+            #halókibaszottzsenivagyok?
+            r = pygame.Rect(rect.x,rect.y+1,8,8)
+            if i[0].colliderect(r):
+                collide = True
+    return collide

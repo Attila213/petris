@@ -17,7 +17,6 @@ blocks = []
 imgs = fun.image_loader()
 
 falling = False
-
 current_block = {
     "pos":[[],[]],
     "img":any,
@@ -29,6 +28,8 @@ current_block = {
 frame = 0
 run = True
 while run:
+    last_move = any
+
 
     frame += 1
     display.fill((0,0,0))
@@ -40,24 +41,17 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 current_block["pos"][0] -= 8
+                last_move = "left"
             if event.key == pygame.K_RIGHT:
                 current_block["pos"][0] += 8
+                last_move = "right"
     
     if falling:
         # ha 60-al osztható a frame akkor
         if frame % 20==0:
             
-            collide = False
-            #ellenőrizzül hogy ütközik-e a jelenlegi rect és a blockban található valamelyik
-            if len(blocks) != 0:
-                for i in blocks:
-                    #halókibaszottzsenivagyok?
-                    r = pygame.Rect(current_block["rect"].x,current_block["rect"].y,9,9)
-                    if i[0].colliderect(r):
-                        collide = True
-                    
-                    
-            
+            collide = fun.collide_block_rects(current_block["rect"],blocks)
+
             # ha a rect y poziciója egyenlő a legalsó rect y poziciójával akkor
             if current_block["pos"][1] == map[0][len(map[0])-1].y or collide:
                 
@@ -67,7 +61,6 @@ while run:
             else:
                 # növeli az y 8-al
                 current_block["pos"][1] += 8
-                current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
 
     else:
         rect,current_block["img"],current_block["type"] = fun.draw_part(map,imgs)
@@ -89,8 +82,16 @@ while run:
         display.blit(i[2],(i[0].x,i[0].y))
     
     
-    pygame.draw.rect(display,(0,0,0),current_block["rect"])
+    current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
+    collide = fun.collide_block_rects(current_block["rect"],blocks)
+    
+    if collide and last_move == "right":
+        current_block["pos"][0] -= 8
+    if collide and last_move == "left":
+        current_block["pos"][0] += 8
+    
     # megrajzolj a formát valós időben
+    pygame.draw.rect(display,(0,0,0),current_block["rect"])
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 
     clock.tick(120)    

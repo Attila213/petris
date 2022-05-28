@@ -10,7 +10,6 @@ display = pygame.Surface((150,150))
 pygame.display.set_caption("PETRIS")
 
 imgs = fun.image_loader()
-
 map = fun.map_generation((50,10),8)
 
 frame = 0
@@ -22,6 +21,8 @@ while run:
             pygame.quit()
     
     
+    #fun.draw_part(display,map,imgs)
+
     
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))

@@ -78,7 +78,7 @@ while run:
     
     # a megrajzolja a bockban található rectet és a hozzá tartozó részt
     for i in blocks:
-        pygame.draw.rect(display,(0,0,0),i[0])   
+        pygame.draw.rect(display,(255,255,255),i[0])   
         display.blit(i[2],(i[0].x,i[0].y))
     
     
@@ -91,7 +91,6 @@ while run:
         current_block["pos"][0] += 8
     
     # megrajzolj a formát valós időben
-    pygame.draw.rect(display,(0,0,0),current_block["rect"])
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 
     clock.tick(120)    

@@ -13,23 +13,34 @@ imgs = fun.image_loader()
 map = fun.map_generation((50,10),8)
 
 falling = False
+current_block_pos = []
+current_block_img = any
 
 frame = 0
 run = True
 while run:
     frame += 1
+    display.fill((0,0,0))
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
     
     if falling:
         if frame % 120==0:
-            print("esik")
+            current_block_pos[1] += 8
     else:   
-        fun.draw_part(display,map,imgs)
-        falling= True
+        current_block_pos,current_block_img = fun.draw_part(map,imgs)
+        current_block_pos[0] = current_block_pos.x
+        current_block_pos[1] = current_block_pos.y
 
-    
+        falling= True
+        
+        
+        
+
+    display.blit(current_block_img,(current_block_pos[0],current_block_pos[1]))
+
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

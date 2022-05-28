@@ -35,7 +35,7 @@ def image_loader():
     
     return imgs
 
-def draw_part(surface,map,imgs):
+def draw_part(map,imgs):
     
     x = random.randint(0,len(map)-1)
     img = any
@@ -49,4 +49,4 @@ def draw_part(surface,map,imgs):
         img = imgs[randomType][randomImg]
     
     
-    surface.blit(img,map[x][0])
+    return map[x][0],img

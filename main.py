@@ -36,6 +36,12 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                current_block["pos"][0] -= 8
+            if event.key == pygame.K_RIGHT:
+                current_block["pos"][0] += 8
     
     if falling:
         # ha 60-al osztható a frame akkor
@@ -46,10 +52,11 @@ while run:
             if len(blocks) != 0:
                 for i in blocks:
                     #halókibaszottzsenivagyok?
-                    r = pygame.Rect(current_block["rect"].x,current_block["rect"].y+1,8,8)
+                    r = pygame.Rect(current_block["rect"].x,current_block["rect"].y,9,9)
                     if i[0].colliderect(r):
                         collide = True
-                
+                    
+                    
             
             # ha a rect y poziciója egyenlő a legalsó rect y poziciójával akkor
             if current_block["pos"][1] == map[0][len(map[0])-1].y or collide:

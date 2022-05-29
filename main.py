@@ -1,6 +1,4 @@
 import math
-from multiprocessing import connection
-from tkinter.tix import Tree
 import pygame,sys,os,time
 import functions as fun
 pygame.init()
@@ -32,6 +30,7 @@ current_block = {
     "directions":any
 }
 
+speed = 60
 
 rotate_counter = 0
 
@@ -72,9 +71,11 @@ while run:
                     current_block["index"] = [current_block["index"][0],current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1]
                 else:
                     current_block["index"] = [current_block["index"][0],len(map[0])-1]
+                
+                frame = speed-1
             
     if falling:
-        if frame % 50==0:
+        if frame % speed==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
                 current_block["index"][1] += 1
             else:

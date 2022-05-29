@@ -147,13 +147,12 @@ while run:
     
     # a jelenlegi elem oszlopába és a map utolsó sorába
     
-    # ki kell deríteni hogy mi a jelenlegi block alatti block ha van ha nincs akkor map utolsó sora
-    aim_rect = pygame.Rect(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y,8,8)
-    
-    if fun.under_the_current(current_block,blocks,map) is not None:
-        display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1].y))
-    else:
-        display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y))
+    # aim megrajzolása
+    if fun.under_the_current(current_block,blocks,map) != 1 and current_block["index"][1] != len(map[0])-1:
+        if fun.under_the_current(current_block,blocks,map) is not None:
+            display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1].y))
+        else:
+            display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y))
 
     
     #endregion

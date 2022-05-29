@@ -1,3 +1,6 @@
+import math
+from multiprocessing import connection
+from tkinter.tix import Tree
 import pygame,sys,os,time
 import functions as fun
 pygame.init()
@@ -12,6 +15,8 @@ pygame.display.set_caption("PETRIS")
 
 map = fun.map_generation((50,10),8)
 blocks = []
+connections = []
+
 imgs = fun.image_loader()
 
 falling = False
@@ -26,6 +31,8 @@ current_block = {
     "directions":any
 }
 
+
+rotate_counter = 0
 
 frame = 0
 run = True
@@ -45,14 +52,18 @@ while run:
                 if fun.collide([current_block["index"][0]+1,current_block["index"][1]],blocks) == False:
                     current_block["index"][0] += 1
             if event.key == pygame.K_UP:
+                rotate_counter +=1
                 current_block["img"] = pygame.transform.rotate(current_block["img"],-90)
+                
+                #ha ezekből az eggyik és fejjel lefelé van akkor megfordítja       
+                if rotate_counter%2==0 and (current_block["type"][1] == "tail" or current_block["type"][1] == "tail2" or current_block["type"][1] == "head" or current_block["type"][1] == "body"): 
+                    current_block["img"] = pygame.transform.flip(current_block["img"],False,True)
 
-                for i in current_block["directions"]:     
+                for i in current_block["directions"]:
                     if i[0] <= 2:
                         i[0] +=1
                     else:
-                        i[0] = 0
-                                        
+                        i[0] = 0                                                    
             if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
                 current_block["index"][1] += 1
 
@@ -62,9 +73,31 @@ while run:
                 current_block["index"][1] += 1
             else:
                 arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"],current_block["directions"]]
+
+                #ha van alatta valami
+                if fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks):
+                    r = fun.collideOBJ([current_block["index"][0],current_block["index"][1]+1],blocks)
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["up","down"])
+                
+                if fun.collide([current_block["index"][0],current_block["index"][1]-1],blocks):
+                    r = fun.collideOBJ([current_block["index"][0],current_block["index"][1]-1],blocks)
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["down","up"])
+                
+                if fun.collide([current_block["index"][0]+1,current_block["index"][1]],blocks):
+                    r = fun.collideOBJ([current_block["index"][0]+1,current_block["index"][1]],blocks)
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["left","right"])
+                    
+                if fun.collide([current_block["index"][0]-1,current_block["index"][1]],blocks):
+                    r = fun.collideOBJ([current_block["index"][0]-1,current_block["index"][1]],blocks)
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["right","left"])
+                
+                            
                 blocks.append(arr)
+                
+                print(connections)
                 falling = False   
     else:
+        rotate_counter = 0
         current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
         falling = True
      

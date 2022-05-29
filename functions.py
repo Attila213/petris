@@ -1,3 +1,4 @@
+from sqlite3 import adapt
 import pygame,sys,os,random,re
 
 def map_generation(startpos,size):
@@ -146,3 +147,9 @@ def filling_connections(connections,r,arr,current_block,directions,mydirections)
     
     return connections
 
+def under_the_current(current_block,blocks,map):
+    
+    for i in range(len(map[0])):
+        if collide([current_block["index"][0],current_block["index"][1]+i],blocks):
+            return i
+        

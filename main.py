@@ -12,6 +12,7 @@ display = pygame.Surface((150,150))
 
 pygame.display.set_caption("PETRIS")
 
+aim = pygame.image.load("images/aim.png")
 
 map = fun.map_generation((50,10),8)
 blocks = []
@@ -143,7 +144,21 @@ while run:
 
     # megrajzolj a formát valós időben
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
+    
+    # a jelenlegi elem oszlopába és a map utolsó sorába
+    
+    # ki kell deríteni hogy mi a jelenlegi block alatti block ha van ha nincs akkor map utolsó sora
+    aim_rect = pygame.Rect(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y,8,8)
+    
+    if fun.under_the_current(current_block,blocks,map) is not None:
+        display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1].y))
+    else:
+        display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y))
+
+    
     #endregion
+    
+    
     
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))

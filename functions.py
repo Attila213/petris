@@ -1,3 +1,4 @@
+from calendar import c
 import pygame,sys,os,random,re
 
 def map_generation(startpos,size):
@@ -72,3 +73,9 @@ def draw_part(map,imgs):
     
     return rect,img,imgtype,index
 
+def collide(index,blocks):
+    collide = False
+    for i in blocks:        
+        if i[2] == index:
+            collide = True
+    return collide

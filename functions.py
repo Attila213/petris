@@ -41,7 +41,7 @@ def image_loader():
 
 def draw_part(map,imgs):
     
-    x = random.randint(0,len(map)-1)
+    x = 4
     img = any
     imgtype = [[],[]]
     

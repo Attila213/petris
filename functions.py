@@ -58,7 +58,15 @@ def draw_part(map,imgs):
         
     
     rect = pygame.Rect(map[x][0].x,map[0][0].y,8,8)
-    return rect,img,imgtype
+    
+    #kiszámolja az indexeket
+    index = any
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            if rect.colliderect(map[i][j]):
+                index = [i,j]
+    
+    return rect,img,imgtype,index
 
 def collide_block_rects(rect,blocks):
     collide = False

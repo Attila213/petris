@@ -1,4 +1,4 @@
-from cgi import print_arguments
+from cgi import print_arguments, print_directory
 from dis import dis
 import pygame,sys,os,time
 import functions as fun
@@ -21,7 +21,8 @@ current_block = {
     "pos":[[],[]],
     "img":any,
     "type":any,
-    "rect":any
+    "rect":any,
+    "index":any
 }
 
 
@@ -48,7 +49,7 @@ while run:
     
     if falling:
         # ha 60-al osztható a frame akkor
-        if frame % 20==0:
+        if frame % 120==0:
             
             collide = fun.collide_block_rects(current_block["rect"],blocks)
 
@@ -63,14 +64,20 @@ while run:
                 current_block["pos"][1] += 8
 
     else:
-        rect,current_block["img"],current_block["type"] = fun.draw_part(map,imgs)
+        rect,current_block["img"],current_block["type"],current_block["index"] = fun.draw_part(map,imgs)
         current_block["pos"][0] = rect.x
         current_block["pos"][1] = rect.y
         current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
         
         falling= True
         
+    
+    
+
+                
+    
         
+    
     # a játékteret rajzolja meg
     for i in map:
         for j in i:

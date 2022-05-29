@@ -42,21 +42,31 @@ while run:
             
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT and current_block["index"][0] > 0:
+                # meg kell nézni hogy ahova ez a move vezet, ott van-e már valami
                 current_block["index"][0] -= 1
             if event.key == pygame.K_RIGHT and current_block["index"][0] < len(map)-1:
                 current_block["index"][0] += 1
 
     
     if falling:
+        
+        collide = False
+        for i in blocks:
+            #ha a következő esés indexe szerepel valahol a block listában akkor ütközés igaz
+            nextpos = [current_block["index"][0],current_block["index"][1]+1]
+            if i[2] == nextpos:
+                collide = True
+        
         # ha 120-al osztható a frame akkor
         if frame % 30==0:
-            if current_block["index"][1] < len(map[0])-1: 
+            if current_block["index"][1] < len(map[0])-1 and collide == False: 
                 current_block["index"][1] += 1
             else:
                 arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"]]
                 blocks.append(arr)
                 falling = False
 
+        
     else:
         current_block["rect"],current_block["img"],current_block["type"],current_block["index"] = fun.draw_part(map,imgs)
         falling = True

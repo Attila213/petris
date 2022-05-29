@@ -1,6 +1,3 @@
-from cgi import print_arguments, print_directory
-from dis import dis
-from doctest import FAIL_FAST
 import pygame,sys,os,time
 import functions as fun
 pygame.init()
@@ -49,6 +46,13 @@ while run:
                     current_block["index"][0] += 1
             if event.key == pygame.K_UP:
                 current_block["img"] = pygame.transform.rotate(current_block["img"],-90)
+
+                for i in current_block["directions"]:     
+                    if i[0] <= 2:
+                        i[0] +=1
+                    else:
+                        i[0] = 0
+                                        
             if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
                 current_block["index"][1] += 1
 

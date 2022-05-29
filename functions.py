@@ -1,4 +1,3 @@
-from calendar import c
 import pygame,sys,os,random,re
 
 def map_generation(startpos,size):
@@ -71,13 +70,13 @@ def draw_part(map,imgs):
                 index = [i,j]
     
     directions= any
-    if imgtype == "body":
+    if imgtype[1] == "body":
         directions = [[1,False],[3,False]]
-    if imgtype == "corner":
+    if imgtype[1] == "corner":
         directions = [[0,False],[3,False]]
-    if imgtype == "head":
+    if imgtype[1] == "head":
         directions = [[3,False]]
-    if imgtype == "tail" or imgtype == "tail2":
+    if imgtype[1] == "tail" or imgtype == "tail2":
         directions = [[1,False]]
     
     return rect,img,imgtype,index,directions

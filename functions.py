@@ -72,13 +72,13 @@ def draw_part(map,imgs):
     
     directions= any
     if imgtype == "body":
-        directions = [1,3]
+        directions = [[1,False],[3,False]]
     if imgtype == "corner":
-        directions = [0,3]
+        directions = [[0,False],[3,False]]
     if imgtype == "head":
-        directions = [3]
+        directions = [[3,False]]
     if imgtype == "tail":
-        directions = [1]
+        directions = [[1,False]]
     
     return rect,img,imgtype,index,directions
 

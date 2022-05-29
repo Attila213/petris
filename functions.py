@@ -95,7 +95,7 @@ def collideOBJ(index,blocks):
             return i
                                                                         #elso:      ami már lent van
                                                                         #masodik:   jelenlegi
-def filling_connections(connections,r,arr,current_block,directions,blocks,mydirections):
+def filling_connections(connections,r,arr,current_block,directions,mydirections):
     
     #nem mindig ez
     match = {
@@ -105,8 +105,6 @@ def filling_connections(connections,r,arr,current_block,directions,blocks,mydire
     }
     
     # ellenőrizzük az egyezéseket egyesével
-    print(r[0][0],current_block["type"][0])
-    
         
     if r[0][0] == current_block["type"][0]:
         match["type"] = True   
@@ -147,3 +145,4 @@ def filling_connections(connections,r,arr,current_block,directions,blocks,mydire
             connections.append([r,arr])
     
     return connections
+

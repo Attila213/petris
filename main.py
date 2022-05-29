@@ -68,33 +68,60 @@ while run:
                 current_block["index"][1] += 1
 
     if falling:
-        if frame % 120==0:
+        if frame % 50==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
                 current_block["index"][1] += 1
             else:
                 arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"],current_block["directions"]]
 
-                #ha van alatta valami
+                #hát ezzzzzgecironda
+                
+                # ha alatta van valami
                 if fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks):
                     r = fun.collideOBJ([current_block["index"][0],current_block["index"][1]+1],blocks)
-                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["up","down"])
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,["up","down"])
                 
+                # ha felette van valami
                 if fun.collide([current_block["index"][0],current_block["index"][1]-1],blocks):
                     r = fun.collideOBJ([current_block["index"][0],current_block["index"][1]-1],blocks)
-                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["down","up"])
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,["down","up"])
                 
+                # ha balra van valami
                 if fun.collide([current_block["index"][0]+1,current_block["index"][1]],blocks):
                     r = fun.collideOBJ([current_block["index"][0]+1,current_block["index"][1]],blocks)
-                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["left","right"])
-                    
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,["left","right"])
+                
+                # ha jobbra van valami
                 if fun.collide([current_block["index"][0]-1,current_block["index"][1]],blocks):
                     r = fun.collideOBJ([current_block["index"][0]-1,current_block["index"][1]],blocks)
-                    connections = fun.filling_connections(connections,r,arr,current_block,directions,blocks,["right","left"])
+                    connections = fun.filling_connections(connections,r,arr,current_block,directions,["right","left"])
                 
-                            
                 blocks.append(arr)
                 
-                print(connections)
+                # ellenőrizzük hogy meg van e már egy teljes pet
+                
+                # végigmegyünk a kapcsolatokon
+                for i in connections:
+                    
+                    # létrehozunk egy változót amit akkor állítunk hamisra ha valami befejezetlen
+                    done = True
+                    
+                    # végigmegyünk a kapcsolódott objekteken egyesével
+                    for j in i:
+                        
+                        #végigmegyünk azoknak az irányoknak az igazságértékein
+                        for dirbool in j[4]:
+                            if dirbool[1] == False:
+                                done = False
+                    
+                    # kivesszük a tömbökből
+                    if done:
+                        for j in i:
+                            for d in blocks:
+                                if d==j:
+                                    blocks.remove(j)
+                        connections.remove(i)
+
                 falling = False   
     else:
         rotate_counter = 0

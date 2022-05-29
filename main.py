@@ -20,7 +20,6 @@ imgs = fun.image_loader()
 falling = False
 
 directions = ["down","left","up","right"]
-
 current_block = {
     "pos":[[],[]],
     "img":any,
@@ -65,7 +64,7 @@ while run:
         current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
         falling = True
      
-          
+    #region draw some stuff
     # a játékteret rajzolja meg
     for i in map:
         for j in i:
@@ -80,7 +79,8 @@ while run:
 
     # megrajzolj a formát valós időben
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
-
+    #endregion
+    
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

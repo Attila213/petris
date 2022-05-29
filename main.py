@@ -147,6 +147,7 @@ while run:
     
     # a jelenlegi elem oszlopába és a map utolsó sorába
     
+
     # aim megrajzolása
     if fun.under_the_current(current_block,blocks,map) != 1 and current_block["index"][1] != len(map[0])-1:
         if fun.under_the_current(current_block,blocks,map) is not None:

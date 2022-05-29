@@ -44,11 +44,15 @@ def draw_part(map,imgs):
     img = any
     imgtype = [[],[]]
     
+    # sorsol egy random típust
     randomType = random.randint(0,len(imgs)-1)
+    # eltárolja a típus nevég
     imgtype[0] = imgs[randomType][0]
     
+    # sorsol egy random képet (body,head,tail,corner)
     randomImg = random.randint(1,len(imgs)-1)
     
+    #ha tail akkor az elsőt vegye
     if randomImg == 4:
         img = imgs[randomType][randomImg][0][0]
         imgtype[1] = imgs[randomType][randomImg][0][1]
@@ -68,13 +72,3 @@ def draw_part(map,imgs):
     
     return rect,img,imgtype,index
 
-def collide_block_rects(rect,blocks):
-    collide = False
-    #ellenőrizzül hogy ütközik-e a jelenlegi rect és a blockban található valamelyik
-    if len(blocks) != 0:
-        for i in blocks:
-            #halókibaszottzsenivagyok?
-            r = pygame.Rect(rect.x,rect.y+1,8,8)
-            if i[0].colliderect(r):
-                collide = True
-    return collide

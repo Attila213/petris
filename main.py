@@ -1,5 +1,6 @@
 from cgi import print_arguments, print_directory
 from dis import dis
+from doctest import FAIL_FAST
 import pygame,sys,os,time
 import functions as fun
 pygame.init()
@@ -40,36 +41,25 @@ while run:
             pygame.quit()
             
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                current_block["pos"][0] -= 8
-                last_move = "left"
-            if event.key == pygame.K_RIGHT:
-                current_block["pos"][0] += 8
-                last_move = "right"
+            if event.key == pygame.K_LEFT and current_block["index"][0] > 0:
+                current_block["index"][0] -= 1
+            if event.key == pygame.K_RIGHT and current_block["index"][0] < len(map)-1:
+                current_block["index"][0] += 1
+
     
     if falling:
-        # ha 60-al osztható a frame akkor
-        if frame % 120==0:
-            
-            collide = fun.collide_block_rects(current_block["rect"],blocks)
-
-            # ha a rect y poziciója egyenlő a legalsó rect y poziciójával akkor
-            if current_block["pos"][1] == map[0][len(map[0])-1].y or collide:
-                
-                # eltárolja a block tömbben
-                blocks.append([pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8),current_block["type"],current_block["img"]])
-                falling = False
+        # ha 120-al osztható a frame akkor
+        if frame % 30==0:
+            if current_block["index"][1] < len(map[0])-1: 
+                current_block["index"][1] += 1
             else:
-                # növeli az y 8-al
-                current_block["pos"][1] += 8
+                arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"]]
+                blocks.append(arr)
+                falling = False
 
     else:
-        rect,current_block["img"],current_block["type"],current_block["index"] = fun.draw_part(map,imgs)
-        current_block["pos"][0] = rect.x
-        current_block["pos"][1] = rect.y
-        current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
-        
-        falling= True
+        current_block["rect"],current_block["img"],current_block["type"],current_block["index"] = fun.draw_part(map,imgs)
+        falling = True
         
     
     
@@ -85,18 +75,12 @@ while run:
     
     # a megrajzolja a bockban található rectet és a hozzá tartozó részt
     for i in blocks:
-        pygame.draw.rect(display,(255,255,255),i[0])   
-        display.blit(i[2],(i[0].x,i[0].y))
+        display.blit(i[1],(map[i[2][0]][i[2][1]].x,map[i[2][0]][i[2][1]].y))
     
-    
+    current_block["pos"] = [map[current_block["index"][0]][current_block["index"][1]].x,map[current_block["index"][0]][current_block["index"][1]].y]
     current_block["rect"] = pygame.Rect(current_block["pos"][0],current_block["pos"][1],8,8)
-    collide = fun.collide_block_rects(current_block["rect"],blocks)
-    
-    if collide and last_move == "right":
-        current_block["pos"][0] -= 8
-    if collide and last_move == "left":
-        current_block["pos"][0] += 8
-    
+    pygame.draw.rect(display,(0,0,0),current_block["rect"])    
+
     # megrajzolj a formát valós időben
     display.blit(current_block["img"],(current_block["pos"][0],current_block["pos"][1]))
 

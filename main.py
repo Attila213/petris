@@ -67,7 +67,12 @@ while run:
                         i[0] = 0                                                    
             if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
                 current_block["index"][1] += 1
-
+            if event.key == pygame.K_SPACE:                
+                if fun.under_the_current(current_block,blocks,map) is not None:
+                    current_block["index"] = [current_block["index"][0],current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1]
+                else:
+                    current_block["index"] = [current_block["index"][0],len(map[0])-1]
+            
     if falling:
         if frame % 50==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
@@ -154,7 +159,6 @@ while run:
         else:
             display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y))
 
-    
     #endregion
     
     

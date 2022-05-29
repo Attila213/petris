@@ -18,12 +18,16 @@ blocks = []
 imgs = fun.image_loader()
 
 falling = False
+
+directions = ["down","left","up","right"]
+
 current_block = {
     "pos":[[],[]],
     "img":any,
     "type":any,
     "rect":any,
-    "index":any
+    "index":any,
+    "directions":any
 }
 
 
@@ -44,21 +48,24 @@ while run:
             if event.key == pygame.K_RIGHT and current_block["index"][0] < len(map)-1:
                 if fun.collide([current_block["index"][0]+1,current_block["index"][1]],blocks) == False:
                     current_block["index"][0] += 1
+            if event.key == pygame.K_UP:
+                current_block["img"] = pygame.transform.rotate(current_block["img"],-90)
+            if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
+                current_block["index"][1] += 1
 
-    
     if falling:
-        # ha 120-al osztható a frame akkor
-        if frame % 30==0:
+        if frame % 120==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
                 current_block["index"][1] += 1
             else:
-                arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"]]
+                arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"],current_block["directions"]]
                 blocks.append(arr)
                 falling = False   
     else:
-        current_block["rect"],current_block["img"],current_block["type"],current_block["index"] = fun.draw_part(map,imgs)
+        current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
         falling = True
-        
+     
+          
     # a játékteret rajzolja meg
     for i in map:
         for j in i:

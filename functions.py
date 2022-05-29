@@ -51,8 +51,7 @@ def draw_part(map,imgs):
     imgtype[0] = imgs[randomType][0]
     
     # sorsol egy random képet (body,head,tail,corner)
-    randomImg = random.randint(1,len(imgs)-1)
-    
+    randomImg = random.randint(1,len(imgs))
     #ha tail akkor az elsőt vegye
     if randomImg == 4:
         img = imgs[randomType][randomImg][0][0]
@@ -71,7 +70,17 @@ def draw_part(map,imgs):
             if rect.colliderect(map[i][j]):
                 index = [i,j]
     
-    return rect,img,imgtype,index
+    directions= any
+    if imgtype == "body":
+        directions = [1,3]
+    if imgtype == "corner":
+        directions = [0,3]
+    if imgtype == "head":
+        directions = [3]
+    if imgtype == "tail":
+        directions = [1]
+    
+    return rect,img,imgtype,index,directions
 
 def collide(index,blocks):
     collide = False

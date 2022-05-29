@@ -17,7 +17,7 @@ def map_generation(startpos,size):
 def image_loader():
     
     imgs = []
-    path = "images"
+    path = "images/pets"
     for i in os.listdir(path):
         imgs2 =[]
         imgs2.append(i)
@@ -77,7 +77,7 @@ def draw_part(map,imgs):
         directions = [[0,False],[3,False]]
     if imgtype == "head":
         directions = [[3,False]]
-    if imgtype == "tail":
+    if imgtype == "tail" or imgtype == "tail2":
         directions = [[1,False]]
     
     return rect,img,imgtype,index,directions

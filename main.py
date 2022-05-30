@@ -1,8 +1,8 @@
-import imp
-import math
 import pygame,sys,os,time
+
 import functions as fun
 import FONT
+from FONT import Font as myfont
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -12,14 +12,17 @@ display = pygame.Surface((150,150))
 
 pygame.display.set_caption("PETRIS")
 
-
 map = fun.map_generation((50,10),8)
 blocks = []
 connections = []
 
+normal_font = myfont('fonts/small_font.png',(0,0,200))
+# my_big_font = myfont('fonts/large_font.png',(0,0,200))
+
+
 aim = pygame.image.load("images/aim.png")
 imgs = fun.image_loader("images/pets")
-background = fun.image_loader("images/backround")
+# background = fun.image_loader("images/backround")
  
 falling = False
 
@@ -140,7 +143,7 @@ while True:
         falling = True
      
     
-    display.blit(pygame.transform.scale(background[0],(150,150)),(0,0))
+    # display.blit(pygame.transform.scale(background[0],(150,150)),(0,0))
      
     #region draw some stuff
     # a játékteret rajzolja meg
@@ -170,6 +173,7 @@ while True:
 
     #endregion
 
+    normal_font.render("szia",display,(10,10),10)
     
     
     clock.tick(120)    

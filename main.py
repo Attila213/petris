@@ -10,15 +10,15 @@ display = pygame.Surface((150,150))
 
 pygame.display.set_caption("PETRIS")
 
-aim = pygame.image.load("images/aim.png")
 
 map = fun.map_generation((50,10),8)
 blocks = []
 connections = []
 
+aim = pygame.image.load("images/aim.png")
 imgs = fun.image_loader("images/pets")
 background = fun.image_loader("images/backround")
-
+ 
 falling = False
 
 directions = ["down","left","up","right"]
@@ -32,8 +32,10 @@ current_block = {
 }
 
 speed = 60
-
 rotate_counter = 0
+
+level = 1
+petlength = 2
 
 frame = 0
 while True:
@@ -135,6 +137,9 @@ while True:
         current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
         falling = True
      
+    
+    display.blit(pygame.transform.scale(background[0],(150,150)),(0,0))
+     
     #region draw some stuff
     # a játékteret rajzolja meg
     for i in map:
@@ -162,8 +167,8 @@ while True:
             display.blit(aim,(map[current_block["index"][0]][len(map[0])-1].x,map[current_block["index"][0]][len(map[0])-1].y))
 
     #endregion
+
     
-    print(background)
     
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))

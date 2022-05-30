@@ -1,6 +1,8 @@
+import imp
 import math
 import pygame,sys,os,time
 import functions as fun
+import FONT
 pygame.init()
 clock = pygame.time.Clock()
 

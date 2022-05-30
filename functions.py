@@ -14,28 +14,32 @@ def map_generation(startpos,size):
         map.append(arr)
     return map
 
-def image_loader():
+def image_loader(path):
     
     imgs = []
-    path = "images/pets"
+    path = path
     for i in os.listdir(path):
-        imgs2 =[]
-        imgs2.append(i)
         
-        for j in os.listdir(path+"/"+i):
-            x = re.search("/*.png",j)       
-            if x:
-                arr2 = [pygame.image.load(path+"/"+i+"/"+j),j.split('.')[0]]
-                imgs2.append(arr2)
-            else:
-                arr = []
-                for dir in os.listdir(path+"/"+i+"/"+j):
-                    arr2 = [pygame.image.load(path+"/"+i+"/"+j+"/"+dir),dir.split('.')[0]]
-                    arr.append(arr2)
-                imgs2.append(arr)
+        if len(i.split('.')) >1:
+            imgs.append(pygame.image.load(path+"/"+i))
+        else:
+            imgs2 =[]
+            imgs2.append(i)
+            
+            for j in os.listdir(path+"/"+i):
+                x = re.search("/*.png",j)       
+                if x:
+                    arr2 = [pygame.image.load(path+"/"+i+"/"+j),j.split('.')[0]]
+                    imgs2.append(arr2)
+                else:
+                    arr = []
+                    for dir in os.listdir(path+"/"+i+"/"+j):
+                        arr2 = [pygame.image.load(path+"/"+i+"/"+j+"/"+dir),dir.split('.')[0]]
+                        arr.append(arr2)
+                    imgs2.append(arr)
             
         
-        imgs.append(imgs2)
+            imgs.append(imgs2)
     
     return imgs
 

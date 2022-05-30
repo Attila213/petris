@@ -16,7 +16,8 @@ map = fun.map_generation((50,10),8)
 blocks = []
 connections = []
 
-imgs = fun.image_loader()
+imgs = fun.image_loader("images/pets")
+background = fun.image_loader("images/backround")
 
 falling = False
 
@@ -35,10 +36,9 @@ speed = 60
 rotate_counter = 0
 
 frame = 0
-run = True
-while run:
+while True:
     frame += 1
-    display.fill((0,0,0))
+    display.fill((30,100,150))
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -163,7 +163,7 @@ while run:
 
     #endregion
     
-    
+    print(background)
     
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))

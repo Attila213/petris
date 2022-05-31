@@ -1,3 +1,4 @@
+from dis import dis
 import pygame,sys,os,time
 
 import functions as fun
@@ -17,7 +18,7 @@ blocks = []
 connections = []
 
 normal_font = myfont('fonts/small_font.png',(0,0,200))
-# my_big_font = myfont('fonts/large_font.png',(0,0,200))
+big_font = myfont('fonts/large_font.png',(255,0,0))
 
 
 aim = pygame.image.load("images/aim.png")
@@ -41,6 +42,9 @@ rotate_counter = 0
 
 level = 1
 petlength = 2
+GAMEOVER = False
+GAMEOVER_circle_radius = 0
+
 
 frame = 0
 while True:
@@ -80,12 +84,13 @@ while True:
                     current_block["index"] = [current_block["index"][0],len(map[0])-1]
                 
                 frame = speed-1
-            
+    
+
     if falling:
         if frame % speed==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
                 current_block["index"][1] += 1
-            else:
+            elif falling:
                 arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"],current_block["directions"]]
 
                 #hát ezzzzzgecironda
@@ -139,11 +144,17 @@ while True:
                 falling = False   
     else:
         rotate_counter = 0
-        current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
-        falling = True
+        
+        if GAMEOVER == False:
+            current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
+        
+        if fun.collide(current_block["index"],blocks):
+            GAMEOVER = True
+            falling = None
+        else:
+            falling = True
      
     
-    # display.blit(pygame.transform.scale(background[0],(150,150)),(0,0))
      
     #region draw some stuff
     # a játékteret rajzolja meg
@@ -173,9 +184,23 @@ while True:
 
     #endregion
 
-    normal_font.render("szia",display,(10,10),10)
+    normal_font.render("LEVEL: "+ str(level),display,(10,10),10)
+    normal_font.render("LENGTH: "+ str(petlength),display,(10,20),10)
+
     
     
+
+    if GAMEOVER:
+        # valami baszó animációt.pl amikor a közeéétőle egy fekete kör egyre nagyobb lesz
+        if frame % 1 == 0 and GAMEOVER_circle_radius < 150:
+            GAMEOVER_circle_radius += 1
+            level = 1
+            petlength = 2
+            
+            
+        pygame.draw.circle(display,(0,0,0),(75,75),GAMEOVER_circle_radius)
+        big_font.render("GAME OVER",display,(45,60),10)
+        
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

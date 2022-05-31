@@ -152,6 +152,11 @@ while True:
                                 if d==j:
                                     blocks.remove(j)
                         connections.remove(i)
+                        if len(i) >= petlength:
+                            blocks.clear()
+                            connections.clear()
+                            level+=1
+                            petlength +=1
 
                 falling = False   
     else:

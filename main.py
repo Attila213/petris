@@ -18,7 +18,9 @@ blocks = []
 connections = []
 
 normal_font = myfont('fonts/small_font.png',(0,0,200))
-big_font = myfont('fonts/large_font.png',(255,0,0))
+gameover_title = myfont('fonts/large_font.png',(255,0,0))
+gameover_text = myfont('fonts/small_font.png',(255,0,0))
+
 
 
 aim = pygame.image.load("images/aim.png")
@@ -45,6 +47,7 @@ petlength = 2
 GAMEOVER = False
 GAMEOVER_circle_radius = 0
 
+gameover_text_flick = False
 
 frame = 0
 while True:
@@ -77,14 +80,23 @@ while True:
                         i[0] = 0                                                    
             if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
                 current_block["index"][1] += 1
-            if event.key == pygame.K_SPACE:                
+            if event.key == pygame.K_SPACE:
                 if fun.under_the_current(current_block,blocks,map) is not None:
                     current_block["index"] = [current_block["index"][0],current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1]
                 else:
                     current_block["index"] = [current_block["index"][0],len(map[0])-1]
                 
                 frame = speed-1
-    
+            if event.key == pygame.K_r and GAMEOVER:
+                blocks.clear()
+                connections.clear()
+                level = 1
+                petlength = 2
+                GAMEOVER == False
+                
+                print("r pressed")
+        
+                
 
     if falling:
         if frame % speed==0:
@@ -152,6 +164,7 @@ while True:
             GAMEOVER = True
             falling = None
         else:
+            GAMEOVER = False
             falling = True
      
     
@@ -188,19 +201,21 @@ while True:
     normal_font.render("LENGTH: "+ str(petlength),display,(10,20),10)
 
     
-    
 
     if GAMEOVER:
-        # valami baszó animációt.pl amikor a közeéétőle egy fekete kör egyre nagyobb lesz
+        pygame.draw.circle(display,(0,0,0),(75,75),GAMEOVER_circle_radius)
         if frame % 1 == 0 and GAMEOVER_circle_radius < 150:
             GAMEOVER_circle_radius += 1
-            level = 1
-            petlength = 2
             
-            
-        pygame.draw.circle(display,(0,0,0),(75,75),GAMEOVER_circle_radius)
-        big_font.render("GAME OVER",display,(45,60),10)
         
+        if frame % 60 == 0:
+            gameover_text_flick = not gameover_text_flick
+            
+        
+        gameover_title.render("GAME OVER",display,(45,60),10)
+        if gameover_text_flick == True:
+            gameover_text.render("press R to restart",display,(45,80),10)
+
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

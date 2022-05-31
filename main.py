@@ -17,7 +17,7 @@ map = fun.map_generation((50,10),8)
 blocks = []
 connections = []
 
-normal_font = myfont('fonts/small_font.png',(0,0,200))
+normal_font = myfont('fonts/small_font.png',(252, 144, 3))
 gameover_title = myfont('fonts/large_font.png',(255,0,0))
 gameover_text = myfont('fonts/small_font.png',(255,0,0))
 
@@ -52,7 +52,7 @@ gameover_text_flick = False
 frame = 0
 while True:
     frame += 1
-    display.fill((30,100,150))
+    display.fill((0,0,0))
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -92,6 +92,7 @@ while True:
                 connections.clear()
                 level = 1
                 petlength = 2
+                speed -= 10
                 GAMEOVER == False
                 
                 print("r pressed")

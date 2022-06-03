@@ -240,8 +240,8 @@ while True:
 
     #endregion
 
-    normal_font.render("LEVEL: "+ str(level),display,(10,10),10)
-    normal_font.render("LENGTH: "+ str(petlength),display,(10,20),10)
+    normal_font.render("LEVEL: "+ str(level),display,(10,40),10)
+    normal_font.render("LENGTH: "+ str(petlength),display,(10,50),10)
 
     
 

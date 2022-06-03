@@ -92,11 +92,9 @@ while True:
                 connections.clear()
                 level = 1
                 petlength = 2
-                speed -= 10
+                # speed -= 10
                 GAMEOVER == False
-                
-                print("r pressed")
-        
+                        
                 
 
     if falling:
@@ -106,7 +104,7 @@ while True:
             elif falling:
                 arr = [current_block["type"],current_block["img"],current_block["index"],current_block["rect"],current_block["directions"]]
 
-                #hát ezzzzzgecironda
+                #valahol itt a hiba.                
                 
                 # ha alatta van valami
                 if fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks):
@@ -128,6 +126,37 @@ while True:
                     r = fun.collideOBJ([current_block["index"][0]-1,current_block["index"][1]],blocks)
                     connections = fun.filling_connections(connections,r,arr,current_block,directions,["right","left"])
                 
+                #végigmegyünk a kapcsolatokon és ha a jelenlegi elem több tömbben is szerepel akkor egyesítjük őket egy tömbben,
+                # kivesszük a kapcsolatokból aztán az összesítettet hozzáadjuk
+                
+                arrays = []
+                counter = 0 
+                for i in connections:
+                    for j in i:
+                        if j == arr:
+                            counter += 1
+                            arrays.append(i)
+                     
+                result_array = [] 
+                if counter >= 2:
+                    for i in arrays:
+                        for j in i:
+                            result_array.append(j)
+
+                    for i in arrays:
+                        for j in connections:
+                            if i == j:
+                                connections.remove(j)
+                    
+                    result_array.remove(arr)
+                    connections.append(result_array)
+                    for i in result_array:
+                        print(i)
+                        
+                    
+                        
+                    
+                
                 blocks.append(arr)
                 
                 # ellenőrizzük hogy meg van e már egy teljes pet
@@ -138,28 +167,33 @@ while True:
                     # létrehozunk egy változót amit akkor állítunk hamisra ha valami befejezetlen
                     done = True
                     
+                    #kéne valami olyasmi hogy kell hogy legyen benne farok vagy fejelem
+                    
                     # végigmegyünk a kapcsolódott objekteken egyesével
                     for j in i:
                         
                         #végigmegyünk azoknak az irányoknak az igazságértékein
-                        for dirbool in j[4]:
-                            if dirbool[1] == False:
+                        for dir in j[4]:
+                            if dir[1] == False:
                                 done = False
                     
-                    # kivesszük a tömbökből
+                    # kivesszük a tömbökből                    
                     if done:
-                        for j in i:
+                        for j in i:                            
                             for d in blocks:
                                 if d==j:
                                     blocks.remove(j)
+                        
                         connections.remove(i)
+                        
+                        
                         if len(i) >= petlength:
                             blocks.clear()
                             connections.clear()
                             level+=1
                             petlength +=1
-
-                falling = False   
+                falling = False
+                   
     else:
         rotate_counter = 0
         
@@ -218,10 +252,13 @@ while True:
             gameover_text_flick = not gameover_text_flick
             
         
-        gameover_title.render("GAME OVER",display,(45,60),10)
-        if gameover_text_flick == True:
-            gameover_text.render("press R to restart",display,(45,80),10)
+        gameover_title.render("GAME OVER",display,(45,50),10)
+        gameover_text.render("PETSCORE:"+str(petlength-1),display,(45,70),10)
 
+        if gameover_text_flick == True:
+            gameover_text.render("press R to restart",display,(45,90),10)
+
+    
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

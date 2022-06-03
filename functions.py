@@ -138,6 +138,7 @@ def filling_connections(connections,r,arr,current_block,directions,mydirections)
         for i in current_block["directions"]:
             if directions[i[0]] == mydirections[1]:
                 i[1] = True
+                
 
         # eltároljuk a kapcsolatot
         hit = False

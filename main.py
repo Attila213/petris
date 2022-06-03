@@ -1,4 +1,3 @@
-from dis import dis
 import pygame,sys,os,time
 
 import functions as fun
@@ -9,11 +8,11 @@ clock = pygame.time.Clock()
 
 WINDOW_SIZE = [700,700]
 screen = pygame.display.set_mode(WINDOW_SIZE,0,32)
-display = pygame.Surface((150,150))
+display = pygame.Surface((150,144))
 
 pygame.display.set_caption("PETRIS")
 
-map = fun.map_generation((50,10),8)
+map = fun.map_generation((63,0),8)
 blocks = []
 connections = []
 
@@ -24,6 +23,8 @@ gameover_text = myfont('fonts/small_font.png',(255,0,0))
 
 
 aim = pygame.image.load("images/aim.png")
+bc = pygame.image.load("images/bc.png")
+
 imgs = fun.image_loader("images/pets")
 # background = fun.image_loader("images/backround")
  
@@ -57,6 +58,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
             
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT and current_block["index"][0] > 0:
@@ -92,7 +94,7 @@ while True:
                 connections.clear()
                 level = 1
                 petlength = 2
-                # speed -= 10
+                speed = 60
                 GAMEOVER == False
                         
                 
@@ -192,6 +194,7 @@ while True:
                             connections.clear()
                             level+=1
                             petlength +=1
+                            speed -=5
                 falling = False
                    
     else:
@@ -208,7 +211,7 @@ while True:
             falling = True
      
     
-     
+    display.blit(bc,(0,0))
     #region draw some stuff
     # a játékteret rajzolja meg
     for i in map:

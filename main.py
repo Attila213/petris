@@ -1,7 +1,8 @@
-import pygame,sys,os,time
-
+from random import randint
+import pygame,sys,random
 import functions as fun
 import FONT
+from pygame import mixer
 from FONT import Font as myfont
 pygame.init()
 clock = pygame.time.Clock()
@@ -26,7 +27,6 @@ aim = pygame.image.load("images/aim.png")
 bc = pygame.image.load("images/bc.png")
 
 imgs = fun.image_loader("images/pets")
-# background = fun.image_loader("images/backround")
  
 falling = False
 
@@ -51,6 +51,12 @@ GAMEOVER_circle_radius = 0
 gameover_text_flick = False
 
 frame = 0
+
+pygame.mixer.music.load("sounds\modern-tetris-music.wav")
+pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.play(-1)
+
+
 while True:
     frame += 1
     display.fill((0,0,0))
@@ -68,21 +74,14 @@ while True:
                 if fun.collide([current_block["index"][0]+1,current_block["index"][1]],blocks) == False:
                     current_block["index"][0] += 1
             if event.key == pygame.K_UP:
-                rotate_counter +=1
-                current_block["img"] = pygame.transform.rotate(current_block["img"],-90)
                 
-                #ha ezekből az eggyik és fejjel lefelé van akkor megfordítja       
-                if rotate_counter%2==0 and (current_block["type"][1] == "tail" or current_block["type"][1] == "tail2" or current_block["type"][1] == "head" or current_block["type"][1] == "body"): 
-                    current_block["img"] = pygame.transform.flip(current_block["img"],False,True)
-
-                for i in current_block["directions"]:
-                    if i[0] <= 2:
-                        i[0] +=1
-                    else:
-                        i[0] = 0                                                    
+                rotate = mixer.Sound("sounds\clap2.wav")
+                rotate.play()
+   
+                rotate_counter,current_block = fun.rotate_once(rotate_counter,current_block)                                                    
             if event.key == pygame.K_DOWN and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False and current_block["index"][1] < len(map[0])-1:
                 current_block["index"][1] += 1
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and not GAMEOVER:
                 if fun.under_the_current(current_block,blocks,map) is not None:
                     current_block["index"] = [current_block["index"][0],current_block["index"][1]+fun.under_the_current(current_block,blocks,map)-1]
                 else:
@@ -90,6 +89,7 @@ while True:
                 
                 frame = speed-1
             if event.key == pygame.K_r and GAMEOVER:
+                pygame.mixer.music.play()
                 blocks.clear()
                 connections.clear()
                 level = 1
@@ -97,8 +97,6 @@ while True:
                 speed = 60
                 GAMEOVER == False
                         
-                
-
     if falling:
         if frame % speed==0:
             if current_block["index"][1] < len(map[0])-1 and fun.collide([current_block["index"][0],current_block["index"][1]+1],blocks) == False: 
@@ -155,10 +153,7 @@ while True:
                     for i in result_array:
                         print(i)
                         
-                    
-                        
-                    
-                
+
                 blocks.append(arr)
                 
                 # ellenőrizzük hogy meg van e már egy teljes pet
@@ -190,19 +185,25 @@ while True:
                         
                         
                         if len(i) >= petlength:
+                            levelup = mixer.Sound("sounds/levelup.wav")
+                            levelup.play()
+                            
+                            
                             blocks.clear()
                             connections.clear()
                             level+=1
                             petlength +=1
                             speed -=5
-                falling = False
-                   
+                falling = False                 
     else:
         rotate_counter = 0
         
         if GAMEOVER == False:
             current_block["rect"],current_block["img"],current_block["type"],current_block["index"],current_block["directions"] = fun.draw_part(map,imgs)
-        
+            
+            for i in range(random.randint(0,4)):
+                rotate_counter,current_block = fun.rotate_once(rotate_counter,current_block)
+            
         if fun.collide(current_block["index"],blocks):
             GAMEOVER = True
             falling = None
@@ -243,13 +244,14 @@ while True:
     normal_font.render("LEVEL: "+ str(level),display,(10,40),10)
     normal_font.render("LENGTH: "+ str(petlength),display,(10,50),10)
 
-    
 
     if GAMEOVER:
+        pygame.mixer.music.pause()
+        pygame.mixer.music.rewind()
         pygame.draw.circle(display,(0,0,0),(75,75),GAMEOVER_circle_radius)
         if frame % 1 == 0 and GAMEOVER_circle_radius < 150:
             GAMEOVER_circle_radius += 1
-            
+
         
         if frame % 60 == 0:
             gameover_text_flick = not gameover_text_flick
@@ -260,8 +262,7 @@ while True:
 
         if gameover_text_flick == True:
             gameover_text.render("press R to restart",display,(45,90),10)
-
-    
+ 
     clock.tick(120)    
     screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
     pygame.display.update()

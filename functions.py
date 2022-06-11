@@ -157,4 +157,19 @@ def under_the_current(current_block,blocks,map):
     for i in range(len(map[0])):
         if collide([current_block["index"][0],current_block["index"][1]+i],blocks):
             return i
-        
+
+def rotate_once(rotate_counter,current_block):
+    rotate_counter +=1
+    current_block["img"] = pygame.transform.rotate(current_block["img"],-90)
+    
+    #ha ezekből az eggyik és fejjel lefelé van akkor megfordítja       
+    if rotate_counter%2==0 and (current_block["type"][1] == "tail" or current_block["type"][1] == "tail2" or current_block["type"][1] == "head" or current_block["type"][1] == "body"): 
+        current_block["img"] = pygame.transform.flip(current_block["img"],False,True)
+    
+    for i in current_block["directions"]:
+        if i[0] <= 2:
+            i[0] +=1
+        else:
+            i[0] = 0
+            
+    return rotate_counter,current_block
